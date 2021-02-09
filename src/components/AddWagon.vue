@@ -15,13 +15,14 @@
       type="number"
       id="wagon"
       ref="wagonInput"
+      maxlength="12"
     />
     <button @click="addWagon">Dodaj</button>
   </div>
   <div>
     <ul>
       <li v-for="(wagon, index) in wagons" :key="index">
-        {{ wagon.wagonNumber }}
+        {{ wagon.wagon }}
       </li>
     </ul>
   </div>
@@ -46,12 +47,12 @@ export default {
 
       if (
         wagonNumber.length !== wagonNormalLength ||
-        this.wagons.includes(wagonNumber)
+        this.wagons.some(({ wagon }) => (wagon === wagonNumber ? true : false))
       ) {
         this.wrongNumber = true;
         return;
       } else {
-        this.wagons.push({ wagonNumber });
+        this.wagons.push({ wagon: wagonNumber });
         this.$refs.wagonInput.value = "";
         console.log(this.wagons);
       }
