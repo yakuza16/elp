@@ -1,5 +1,5 @@
 <template>
-  <AddWagon msg="Welcome to Your Vue.js App" />
+  <AddWagon msg="Stwórz pociąg" />
 </template>
 
 <script>
