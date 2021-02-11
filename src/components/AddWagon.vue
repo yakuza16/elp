@@ -8,12 +8,15 @@
         <option value="sggrss">Sggrss</option>
         <option value="rgmms">Rgmms</option>
         <option value="sdgmnss">Sdgmnss</option>
+        <option value="sgns">Sgns</option>
+        <option value="sggrs">Sggrs</option>
+        <option value="sggmrss">Sggmrss</option>
       </select>
     </div>
     <div class="border-2 flex place-items-center space-x-6">
       <label for="wagon">Wpisz numer wagonu</label>
       <input
-        @input="wrongNumber = false"
+        @input="checkLength"
         @keyup.enter="addWagon"
         class="text-black h-12 text-lg placeholder-gray-400"
         maxlength="12"
@@ -29,16 +32,20 @@
     >
   </div>
   <div>
-    <ul class="flex flex-col w-1/3 my-8">
+    <ul class="flex flex-col my-8">
       <li
-        class="flex justify-around border-gray-400 border-2"
-        v-for="(wagon, index) in wagons"
+        class="flex justify-start space-x-8 border-gray-400 border-2"
+        v-for="({ wagonNumber, wagonType, axis, wagonTare, maxPayload },
+        index) in wagons"
         :key="index"
       >
-        <span>Nr:{{ index + 1 }}</span>
-        <span>Typ: {{ wagon.wagonType }}</span>
+        <span>LP: {{ index + 1 }}</span>
+        <span>Typ: {{ wagonType }}</span>
+        <span>Osi: {{ axis }}</span>
+        <span>Tara wagonu: {{ wagonTare }} kg</span>
+        <span>Granica obciążenia: {{ maxPayload }} ton </span>
 
-        {{ wagon.wagonNumber }}
+        <span> {{ wagonNumber }}</span>
         <button
           class="rounded-lg border-2 px-4 text-red-400"
           @click="deleteWagon(index)"
@@ -67,16 +74,71 @@ export default {
       const wagonNumber = this.$refs.wagonInput.value;
       const wagonType = this.$refs.type.value;
       const wagonNormalLength = 12;
+      let axis = null;
+      let wagonTare = null;
+      let maxPayload = null;
 
       if (
         wagonNumber.length !== wagonNormalLength ||
-        this.wagons.some(({ wagon }) => (wagon === wagonNumber ? true : false))
+        this.wagons.some((element) =>
+          element.wagonNumber === wagonNumber ? true : false
+        )
       ) {
         this.wrongNumber = true;
         console.log(this.$refs.type.value);
         return;
       } else {
-        this.wagons.push({ wagonNumber, wagonType });
+        switch (wagonType) {
+          case "kgns":
+            axis = 2;
+            wagonTare = 14000;
+            maxPayload = 26;
+            break;
+          case "sgs":
+            axis = 4;
+            wagonTare = 21000;
+            maxPayload = 58;
+            break;
+          case "sgns":
+            axis = 4;
+            wagonTare = 20000;
+            maxPayload = 58;
+            break;
+          case "rgmms":
+            axis = 4;
+            wagonTare = 25000;
+            maxPayload = 55;
+            break;
+          case "sdgmnss":
+            axis = 4;
+            wagonTare = 19500;
+            maxPayload = 58;
+            break;
+          case "sggrss":
+            axis = 6;
+            wagonTare = 25100;
+            maxPayload = 92;
+            break;
+          case "sggrs":
+            axis = 6;
+            wagonTare = 27100;
+            maxPayload = 91;
+            break;
+          case "sggmrss":
+            axis = 6;
+            wagonTare = 28000;
+            maxPayload = 88;
+            break;
+        }
+
+        this.wagons.push({
+          wagonNumber,
+          wagonType,
+          axis,
+          wagonTare,
+          maxPayload,
+        });
+        this.$refs.wagonInput.classList.remove("green");
         this.$refs.wagonInput.value = "";
         console.log(this.wagons);
       }
@@ -84,8 +146,18 @@ export default {
     deleteWagon(id) {
       this.wagons.splice(id, 1);
     },
+    checkLength() {
+      this.wrongNumber = false;
+      if (this.$refs.wagonInput.value.length === 12) {
+        this.$refs.wagonInput.classList.add("green");
+      } else this.$refs.wagonInput.classList.remove("green");
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.green {
+  background-color: green;
+}
+</style>
