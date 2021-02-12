@@ -212,6 +212,9 @@ export default {
       if (arr.indexOf(id)) {
         console.log(id);
         const containerNumber = document.getElementById(`container${id}`).value;
+        if (!containerNumber) {
+          return;
+        }
         const containerType = document.getElementById(`containerType${id}`)
           .value;
         const emptyOrFull = document.getElementById(`emptyOrFull${id}`).value;
