@@ -34,16 +34,18 @@
   <div class="text-sm">
     <ul class="flex flex-col my-8">
       <li
-        class="flex justify-start place-items-center space-x-8  border-gray-400 border-2"
+        class="flex justify-start place-items-center space-x-4  border-gray-400 border-2"
         v-for="({ wagonNumber, wagonType, axis, wagonTare, maxPayload },
         index) in wagons"
         :key="index"
       >
-        <span>LP: {{ index + 1 }}</span>
-        <span>Typ: {{ wagonType }}</span>
-        <span>Osi: {{ axis }}</span>
-        <span>Tara wagonu: {{ wagonTare }} kg</span>
-        <span>Granica obciążenia: {{ maxPayload }} ton </span>
+        <div>
+          <p>LP: {{ index + 1 }}</p>
+          <p>Typ: {{ wagonType }}</p>
+          <p>Osi: {{ axis }}</p>
+          <p>Tara wagonu: {{ wagonTare }} kg</p>
+          <p>Granica obciążenia: {{ maxPayload }} ton</p>
+        </div>
 
         <span> {{ wagonNumber }}</span>
         <button
@@ -52,6 +54,32 @@
         >
           Usuń
         </button>
+        <div class="border-2 flex space-x-6">
+          <label for="containerType">Rozmiar:</label>
+          <select
+            ref="containerType"
+            :id="`containerType${index}`"
+            class="text-black"
+          >
+            <option value="20DV">20DV</option>
+            <option value="40HC" selected>40HC</option>
+            <option value="40DV">40DV</option>
+            <option value="45HC">45HC</option>
+          </select>
+        </div>
+
+        <div class="border-2 flex space-x-6">
+          <label for="emptyOrFull">Rozmiar:</label>
+          <select
+            ref="emptyOrFull"
+            :id="`emptyOrFull${index}`"
+            class="text-black"
+          >
+            <option value="Pusty" selected>Pusty</option>
+            <option value="Ładowny">Ładowny</option>
+          </select>
+        </div>
+
         <label :for="`container${index}`">Wpisz numer kontenera</label>
         <input
           @input="checkLength"
@@ -68,12 +96,16 @@
         >
           Dodaj kontener
         </button>
-        <ul>
+        <ul class="flex">
           <li
-            v-for="({ containerNumber }, id) in wagons[index].kontenery"
+            class="border-2 border-gray-900 p-2"
+            v-for="({ containerNumber, containerType, emptyOrFull },
+            id) in wagons[index].kontenery"
             :key="id"
           >
             <p>{{ containerNumber }}</p>
+            <p>{{ containerType }}</p>
+            <p>{{ emptyOrFull }}</p>
           </li>
         </ul>
       </li>
@@ -180,9 +212,19 @@ export default {
       if (arr.indexOf(id)) {
         console.log(id);
         const containerNumber = document.getElementById(`container${id}`).value;
+        const containerType = document.getElementById(`containerType${id}`)
+          .value;
+        const emptyOrFull = document.getElementById(`emptyOrFull${id}`).value;
         if (this.wagons[id].kontenery) {
-          this.wagons[id].kontenery.push({ containerNumber });
-        } else this.wagons[id].kontenery = [{ containerNumber }];
+          this.wagons[id].kontenery.push({
+            containerNumber,
+            containerType,
+            emptyOrFull,
+          });
+        } else
+          this.wagons[id].kontenery = [
+            { containerNumber, containerType, emptyOrFull },
+          ];
         console.log(this.wagons);
       }
     },
