@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-start space-x-4 place-items-center">
+  <div class="flex justify-start space-x-4 place-items-center text-sm">
     <div class="border-2 flex space-x-6">
       <label for="type">Typ wagonu:</label>
       <select ref="type" id="type" class="text-black">
@@ -31,10 +31,10 @@
       wagon</span
     >
   </div>
-  <div>
+  <div class="text-sm">
     <ul class="flex flex-col my-8">
       <li
-        class="flex justify-start space-x-8 border-gray-400 border-2"
+        class="flex justify-start place-items-center space-x-8  border-gray-400 border-2"
         v-for="({ wagonNumber, wagonType, axis, wagonTare, maxPayload },
         index) in wagons"
         :key="index"
@@ -52,6 +52,30 @@
         >
           Usuń
         </button>
+        <label :for="`container${index}`">Wpisz numer kontenera</label>
+        <input
+          @input="checkLength"
+          @keyup.enter="addContainer(index, wagons)"
+          class="text-black h-12 text-lg placeholder-gray-400"
+          maxlength="11"
+          :id="`container${index}`"
+          :ref="`containerInput${index}`"
+          placeholder="nr kontenera"
+        />
+        <button
+          class="rounded-lg border-2 px-4 "
+          @click="addContainer(index, wagons)"
+        >
+          Dodaj kontener
+        </button>
+        <ul>
+          <li
+            v-for="({ containerNumber }, id) in wagons[index].kontenery"
+            :key="id"
+          >
+            <p>{{ containerNumber }}</p>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>
@@ -151,6 +175,16 @@ export default {
       if (this.$refs.wagonInput.value.length === 12) {
         this.$refs.wagonInput.classList.add("green");
       } else this.$refs.wagonInput.classList.remove("green");
+    },
+    addContainer(id, arr) {
+      if (arr.indexOf(id)) {
+        console.log(id);
+        const containerNumber = document.getElementById(`container${id}`).value;
+        if (this.wagons[id].kontenery) {
+          this.wagons[id].kontenery.push({ containerNumber });
+        } else this.wagons[id].kontenery = [{ containerNumber }];
+        console.log(this.wagons);
+      }
     },
   },
 };
