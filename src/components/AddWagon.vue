@@ -75,8 +75,8 @@
             :id="`emptyOrFull${index}`"
             class="text-black"
           >
-            <option value="Pusty" selected>Pusty</option>
-            <option value="Ładowny">Ładowny</option>
+            <option value="pusty" selected>Pusty</option>
+            <option value="ładowny">Ładowny</option>
           </select>
         </div>
 
@@ -100,12 +100,29 @@
           <li
             class="border-2 border-gray-900 p-2"
             v-for="({ containerNumber, containerType, emptyOrFull },
-            id) in wagons[index].kontenery"
-            :key="id"
+            idContainer) in wagons[index].kontenery"
+            :key="idContainer"
           >
             <p>{{ containerNumber }}</p>
             <p>{{ containerType }}</p>
             <p>{{ emptyOrFull }}</p>
+            <div
+              class="flex flex-col space-y-2"
+              v-if="emptyOrFull === 'ładowny'"
+            >
+              <input
+                @keyup.enter="addSeal(idContainer, wagons[index].kontenery)"
+                :id="`seal${idContainer}`"
+                class="text-black h-6 text-lg placeholder-gray-400"
+                type="text"
+                placeholder="plomba /zatwierdź enterem"
+              />
+              <input
+                class="text-black h-6 text-lg placeholder-gray-400"
+                type="text"
+                placeholder="waga towaru/zatwierdź enterem"
+              />
+            </div>
           </li>
         </ul>
       </li>
@@ -229,6 +246,21 @@ export default {
             { containerNumber, containerType, emptyOrFull },
           ];
         console.log(this.wagons);
+      }
+    },
+    addSeal(id, containersArr) {
+      if (containersArr.indexOf(id)) {
+        console.log(`to jest indeks kontenera ${id}`);
+        const seal = document.getElementById(`seal${id}`).value;
+        if (Object.prototype.hasOwnProperty.call(containersArr[id], "seals")) {
+          console.log("on juz ma tablice z sealsami");
+          containersArr[id].seals.push(seal);
+          console.log(containersArr[id].seals);
+        } else {
+          console.log(seal);
+          containersArr[id].seals = [seal];
+          console.log(containersArr[id].seals);
+        }
       }
     },
   },
