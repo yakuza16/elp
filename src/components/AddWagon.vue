@@ -99,7 +99,7 @@
         <ul class="flex">
           <li
             class="border-2 border-gray-900 p-2"
-            v-for="({ containerNumber, containerType, emptyOrFull },
+            v-for="({ containerNumber, containerType, emptyOrFull, weight },
             idContainer) in wagons[index].kontenery"
             :key="idContainer"
           >
@@ -114,7 +114,7 @@
                 :id="`seal${index}${idContainer}`"
                 class="text-black h-6 text-xs placeholder-gray-400"
                 type="text"
-                placeholder="plomba /zatwierdź enterem"
+                placeholder="plomba /ENTER"
               />
               <ul>
                 <li
@@ -127,10 +127,15 @@
                 </li>
               </ul>
               <input
+                @keyup.enter="
+                  addWeight(wagons, index, idContainer, wagons[index].kontenery)
+                "
+                :id="`weight${index}${idContainer}`"
                 class="text-black h-6 text-xs placeholder-gray-400"
                 type="text"
-                placeholder="waga towaru/zatwierdź enterem"
+                placeholder="waga w KG/ ENTER"
               />
+              <p v-if="weight">Waga towaru: {{ weight }} kg</p>
             </div>
           </li>
         </ul>
@@ -251,33 +256,46 @@ export default {
             containerType,
             emptyOrFull,
           });
+          document.getElementById(`container${id}`).value = "";
         } else
           this.wagons[id].kontenery = [
             { containerNumber, containerType, emptyOrFull },
           ];
+        document.getElementById(`container${id}`).value = "";
         // console.log(this.wagons);
       }
     },
     addSeal(wagonsArr, wagonsArrIndex, id, containersArr) {
       if (wagonsArr.indexOf(wagonsArrIndex)) {
-        console.log(`indeks wagonu ${wagonsArrIndex}`);
+        // console.log(`indeks wagonu ${wagonsArrIndex}`);
         if (containersArr.indexOf(id)) {
-          console.log(`to jest indeks kontenera ${id}`);
-          let seal = document.getElementById(`seal${wagonsArrIndex}${id}`)
+          // console.log(`to jest indeks kontenera ${id}`);
+          const seal = document.getElementById(`seal${wagonsArrIndex}${id}`)
             .value;
           if (
             Object.prototype.hasOwnProperty.call(containersArr[id], "seals")
           ) {
             // console.log("on juz ma tablice z sealsami");
             containersArr[id].seals.push(seal);
-            seal = "";
+            document.getElementById(`seal${wagonsArrIndex}${id}`).value = "";
             // console.log(containersArr[id].seals);
           } else {
             // console.log(seal);
             containersArr[id].seals = [seal];
-            seal = "";
+            document.getElementById(`seal${wagonsArrIndex}${id}`).value = "";
             // console.log(containersArr[id].seals);
           }
+        }
+      }
+    },
+    addWeight(wagonsArr, wagonsArrIndex, id, containersArr) {
+      if (wagonsArr.indexOf(wagonsArrIndex)) {
+        if (containersArr.indexOf(id)) {
+          const weight = document.getElementById(`weight${wagonsArrIndex}${id}`)
+            .value;
+          containersArr[id].weight = Number(weight);
+          document.getElementById(`weight${wagonsArrIndex}${id}`).value = "";
+          console.log(wagonsArr);
         }
       }
     },
