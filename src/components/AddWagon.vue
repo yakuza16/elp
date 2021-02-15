@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-start space-x-4 place-items-center text-sm">
+  <div class="flex justify-start space-x-4 place-items-center text-xs">
     <div class="border-2 flex space-x-6">
       <label for="type">Typ wagonu:</label>
       <select ref="type" id="type" class="text-black">
@@ -18,7 +18,7 @@
       <input
         @input="checkLength"
         @keyup.enter="addWagon"
-        class="text-black h-12 text-lg placeholder-gray-400"
+        class="text-black h-12 text-xs placeholder-gray-400"
         maxlength="12"
         id="wagon"
         ref="wagonInput"
@@ -31,7 +31,7 @@
       wagon</span
     >
   </div>
-  <div class="text-sm">
+  <div class="text-xs">
     <ul class="flex flex-col my-8">
       <li
         class="flex justify-start place-items-center space-x-4  border-gray-400 border-2"
@@ -84,7 +84,7 @@
         <input
           @input="checkLength"
           @keyup.enter="addContainer(index, wagons)"
-          class="text-black h-12 text-lg placeholder-gray-400"
+          class="text-black h-12 text-xs placeholder-gray-400"
           maxlength="11"
           :id="`container${index}`"
           :ref="`containerInput${index}`"
@@ -106,19 +106,28 @@
             <p>{{ containerNumber }}</p>
             <p>{{ containerType }}</p>
             <p>{{ emptyOrFull }}</p>
-            <div
-              class="flex flex-col space-y-2"
-              v-if="emptyOrFull === 'ładowny'"
-            >
+            <div class="flex flex-col space-y-2" v-if="emptyOrFull === full">
               <input
-                @keyup.enter="addSeal(idContainer, wagons[index].kontenery)"
-                :id="`seal${idContainer}`"
-                class="text-black h-6 text-lg placeholder-gray-400"
+                @keyup.enter="
+                  addSeal(wagons, index, idContainer, wagons[index].kontenery)
+                "
+                :id="`seal${index}${idContainer}`"
+                class="text-black h-6 text-xs placeholder-gray-400"
                 type="text"
                 placeholder="plomba /zatwierdź enterem"
               />
+              <ul>
+                <li
+                  v-for="(seal, sealIndex) in wagons[index].kontenery[
+                    idContainer
+                  ].seals"
+                  :key="sealIndex"
+                >
+                  plomba: {{ seal }}
+                </li>
+              </ul>
               <input
-                class="text-black h-6 text-lg placeholder-gray-400"
+                class="text-black h-6 text-xs placeholder-gray-400"
                 type="text"
                 placeholder="waga towaru/zatwierdź enterem"
               />
@@ -140,6 +149,7 @@ export default {
     return {
       wagons: [],
       wrongNumber: false,
+      full: "ładowny",
     };
   },
   methods: {
@@ -158,7 +168,7 @@ export default {
         )
       ) {
         this.wrongNumber = true;
-        console.log(this.$refs.type.value);
+        // console.log(this.$refs.type.value);
         return;
       } else {
         switch (wagonType) {
@@ -213,7 +223,7 @@ export default {
         });
         this.$refs.wagonInput.classList.remove("green");
         this.$refs.wagonInput.value = "";
-        console.log(this.wagons);
+        // console.log(this.wagons);
       }
     },
     deleteWagon(id) {
@@ -227,7 +237,7 @@ export default {
     },
     addContainer(id, arr) {
       if (arr.indexOf(id)) {
-        console.log(id);
+        // console.log(id);
         const containerNumber = document.getElementById(`container${id}`).value;
         if (!containerNumber) {
           return;
@@ -245,21 +255,29 @@ export default {
           this.wagons[id].kontenery = [
             { containerNumber, containerType, emptyOrFull },
           ];
-        console.log(this.wagons);
+        // console.log(this.wagons);
       }
     },
-    addSeal(id, containersArr) {
-      if (containersArr.indexOf(id)) {
-        console.log(`to jest indeks kontenera ${id}`);
-        const seal = document.getElementById(`seal${id}`).value;
-        if (Object.prototype.hasOwnProperty.call(containersArr[id], "seals")) {
-          console.log("on juz ma tablice z sealsami");
-          containersArr[id].seals.push(seal);
-          console.log(containersArr[id].seals);
-        } else {
-          console.log(seal);
-          containersArr[id].seals = [seal];
-          console.log(containersArr[id].seals);
+    addSeal(wagonsArr, wagonsArrIndex, id, containersArr) {
+      if (wagonsArr.indexOf(wagonsArrIndex)) {
+        console.log(`indeks wagonu ${wagonsArrIndex}`);
+        if (containersArr.indexOf(id)) {
+          console.log(`to jest indeks kontenera ${id}`);
+          let seal = document.getElementById(`seal${wagonsArrIndex}${id}`)
+            .value;
+          if (
+            Object.prototype.hasOwnProperty.call(containersArr[id], "seals")
+          ) {
+            // console.log("on juz ma tablice z sealsami");
+            containersArr[id].seals.push(seal);
+            seal = "";
+            // console.log(containersArr[id].seals);
+          } else {
+            // console.log(seal);
+            containersArr[id].seals = [seal];
+            seal = "";
+            // console.log(containersArr[id].seals);
+          }
         }
       }
     },
