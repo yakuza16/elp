@@ -31,11 +31,11 @@
       wagon</span
     >
   </div>
-  <div class="text-xs">
+  <div class="flex text-xs">
     <ul class="flex flex-col my-8">
       <li
         class="flex justify-start place-items-center space-x-4  border-gray-400 border-2"
-        v-for="({ wagonNumber, wagonType, axis, wagonTare, maxPayload },
+        v-for="({ wagonNumber, wagonType, axis, wagonWeight, maxPayload },
         index) in wagons"
         :key="index"
       >
@@ -43,7 +43,7 @@
           <p>LP: {{ index + 1 }}</p>
           <p>Typ: {{ wagonType }}</p>
           <p>Osi: {{ axis }}</p>
-          <p>Tara wagonu: {{ wagonTare }} kg</p>
+          <p>Tara wagonu: {{ wagonWeight }} kg</p>
           <p>Granica obciążenia: {{ maxPayload }} ton</p>
         </div>
 
@@ -84,7 +84,7 @@
         <input
           @input="checkLength"
           @keyup.enter="addContainer(index, wagons)"
-          class="text-black h-12 text-xs placeholder-gray-400"
+          class="text-black h-12 text-xs placeholder-gray-400 w-1/12"
           maxlength="11"
           :id="`container${index}`"
           :ref="`containerInput${index}`"
@@ -96,7 +96,7 @@
         >
           Dodaj kontener
         </button>
-        <ul class="flex">
+        <ul class="flex place-items-center">
           <li
             class="border-2 border-gray-900 p-2"
             v-for="({ containerNumber, containerType, emptyOrFull, weight },
@@ -105,16 +105,19 @@
           >
             <p>{{ containerNumber }}</p>
             <p>{{ containerType }}</p>
-            <p>{{ emptyOrFull }}</p>
-            <div class="flex flex-col space-y-2" v-if="emptyOrFull === full">
+            <p class="text-green-400 font-bold">{{ emptyOrFull }}</p>
+            <div
+              class="flex flex-col space-y-2 place-items-center"
+              v-if="emptyOrFull === full"
+            >
               <input
                 @keyup.enter="
                   addSeal(wagons, index, idContainer, wagons[index].kontenery)
                 "
                 :id="`seal${index}${idContainer}`"
-                class="text-black h-6 text-xs placeholder-gray-400"
+                class="text-black h-6 text-xs placeholder-gray-400 w-1/2"
                 type="text"
-                placeholder="plomba /ENTER"
+                placeholder="plomba"
               />
               <ul>
                 <li
@@ -123,7 +126,7 @@
                   ].seals"
                   :key="sealIndex"
                 >
-                  plomba: {{ seal }}
+                  plomba: <span class="text-green-400"> {{ seal }}</span>
                 </li>
               </ul>
               <input
@@ -131,11 +134,14 @@
                   addWeight(wagons, index, idContainer, wagons[index].kontenery)
                 "
                 :id="`weight${index}${idContainer}`"
-                class="text-black h-6 text-xs placeholder-gray-400"
+                class="text-black h-6 text-xs placeholder-gray-400 w-1/2"
                 type="text"
-                placeholder="waga w KG/ ENTER"
+                placeholder="waga KG"
               />
-              <p v-if="weight">Waga towaru: {{ weight }} kg</p>
+              <p v-if="weight">
+                Waga towaru:
+                <span class="text-green-400"> {{ weight }} </span> kg
+              </p>
             </div>
           </li>
         </ul>
@@ -163,8 +169,9 @@ export default {
       const wagonType = this.$refs.type.value;
       const wagonNormalLength = 12;
       let axis = null;
-      let wagonTare = null;
+      let wagonWeight = null;
       let maxPayload = null;
+      let loadLength = null;
 
       if (
         wagonNumber.length !== wagonNormalLength ||
@@ -179,43 +186,51 @@ export default {
         switch (wagonType) {
           case "kgns":
             axis = 2;
-            wagonTare = 14000;
+            wagonWeight = 14000;
             maxPayload = 26;
+            loadLength = 40;
             break;
           case "sgs":
             axis = 4;
-            wagonTare = 21000;
+            wagonWeight = 21000;
             maxPayload = 58;
+            loadLength = 60;
             break;
           case "sgns":
             axis = 4;
-            wagonTare = 20000;
+            wagonWeight = 20000;
             maxPayload = 58;
+            loadLength = 60;
             break;
           case "rgmms":
             axis = 4;
-            wagonTare = 25000;
+            wagonWeight = 25000;
             maxPayload = 55;
+            loadLength = 40;
             break;
           case "sdgmnss":
             axis = 4;
-            wagonTare = 19500;
+            wagonWeight = 19500;
             maxPayload = 58;
+            loadLength = 60;
             break;
           case "sggrss":
             axis = 6;
-            wagonTare = 25100;
+            wagonWeight = 25100;
             maxPayload = 92;
+            loadLength = 80;
             break;
           case "sggrs":
             axis = 6;
-            wagonTare = 27100;
+            wagonWeight = 27100;
             maxPayload = 91;
+            loadLength = 80;
             break;
           case "sggmrss":
             axis = 6;
-            wagonTare = 28000;
+            wagonWeight = 28000;
             maxPayload = 88;
+            loadLength = 80;
             break;
         }
 
@@ -223,8 +238,9 @@ export default {
           wagonNumber,
           wagonType,
           axis,
-          wagonTare,
+          wagonWeight,
           maxPayload,
+          loadLength,
         });
         this.$refs.wagonInput.classList.remove("green");
         this.$refs.wagonInput.value = "";
