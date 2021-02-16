@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-start space-x-4 place-items-center text-xs">
-    <div class="border-2 flex space-x-6">
+    <div class="border-2 p-1 flex space-x-1">
       <label for="type">Typ wagonu:</label>
       <select ref="type" id="type" class="text-black">
         <option value="kgns">Kgns</option>
@@ -13,7 +13,7 @@
         <option value="sggmrss">Sggmrss</option>
       </select>
     </div>
-    <div class="border-2 flex place-items-center space-x-6">
+    <div class="border-2 flex p-1 place-items-center space-x-1">
       <label for="wagon">Wpisz numer wagonu</label>
       <input
         @input="checkLength"
@@ -25,37 +25,54 @@
         placeholder="nr wagonu"
       />
     </div>
-    <button class="rounded-lg border-2 px-4" @click="addWagon">Dodaj</button>
-    <span class="text-red-400" v-show="wrongNumber"
+    <button
+      class="rounded-lg border-2 px-4 py-1 w-14 bg-green-500"
+      @click="addWagon"
+    >
+      <img src="../assets/icons/add.svg" alt="add" />
+    </button>
+    <span class="text-red-500" v-show="wrongNumber"
       >Wpisałeś za krótki nr wagonu lub próbujesz dodać ponownie ten sam
       wagon</span
     >
   </div>
   <div class="flex text-xs">
-    <ul class="flex flex-col my-8">
+    <ul class="flex flex-col my-4">
       <li
-        class="flex justify-start place-items-center space-x-4  border-gray-400 border-2"
+        class="flex justify-start place-items-center space-x-2  border-gray-400 border-2"
         v-for="({ wagonNumber, wagonType, axis, wagonWeight, maxPayload },
         index) in wagons"
         :key="index"
       >
-        <div>
-          <p>LP: {{ index + 1 }}</p>
-          <p>Typ: {{ wagonType }}</p>
-          <p>Osi: {{ axis }}</p>
-          <p>Tara wagonu: {{ wagonWeight }} kg</p>
-          <p>Granica obciążenia: {{ maxPayload }} ton</p>
+        <div class="text-left px-2">
+          <p>
+            LP: <span class="text-green-400">{{ index + 1 }}</span>
+          </p>
+          <p>
+            Typ: <span class="text-green-400">{{ wagonType }}</span>
+          </p>
+          <p>
+            Osi: <span class="text-green-400">{{ axis }}</span>
+          </p>
+          <p>
+            Tara wagonu:
+            <span class="text-green-400">{{ wagonWeight }} kg</span>
+          </p>
+          <p>
+            Granica obciążenia:
+            <span class="text-green-400">{{ maxPayload }} ton</span>
+          </p>
         </div>
 
-        <span> {{ wagonNumber }}</span>
+        <span class="text-green-400 text-lg font-bold"> {{ wagonNumber }}</span>
         <button
-          class="rounded-lg border-2 px-4 text-red-400"
+          class="rounded-lg border-2 px-4 py-1 bg-red-500 w-12"
           @click="deleteWagon(index)"
         >
-          Usuń
+          <img src="../assets/icons/trash.svg" alt="delete" />
         </button>
-        <div class="border-2 flex space-x-6">
-          <label for="containerType">Rozmiar:</label>
+        <div class="border-2 p-1 flex space-x-1">
+          <label :for="`containerType${index}`">Rozmiar:</label>
           <select
             ref="containerType"
             :id="`containerType${index}`"
@@ -68,8 +85,8 @@
           </select>
         </div>
 
-        <div class="border-2 flex space-x-6">
-          <label for="emptyOrFull">Rozmiar:</label>
+        <div class="border-2 p-1 flex space-x-1">
+          <label :for="`emptyOrFull${index}`">Rozmiar:</label>
           <select
             ref="emptyOrFull"
             :id="`emptyOrFull${index}`"
@@ -91,10 +108,10 @@
           placeholder="nr kontenera"
         />
         <button
-          class="rounded-lg border-2 px-4 "
+          class="rounded-lg border-2 px-4 py-1 bg-green-500 w-12 "
           @click="addContainer(index, wagons)"
         >
-          Dodaj kontener
+          <img src="../assets/icons/add.svg" alt="add" />
         </button>
         <ul class="flex place-items-center">
           <li
@@ -180,7 +197,6 @@ export default {
         )
       ) {
         this.wrongNumber = true;
-        // console.log(this.$refs.type.value);
         return;
       } else {
         switch (wagonType) {
@@ -244,7 +260,6 @@ export default {
         });
         this.$refs.wagonInput.classList.remove("green");
         this.$refs.wagonInput.value = "";
-        // console.log(this.wagons);
       }
     },
     deleteWagon(id) {
@@ -258,7 +273,6 @@ export default {
     },
     addContainer(id, arr) {
       if (arr.indexOf(id)) {
-        // console.log(id);
         const containerNumber = document.getElementById(`container${id}`).value;
         if (!containerNumber) {
           return;
@@ -278,28 +292,21 @@ export default {
             { containerNumber, containerType, emptyOrFull },
           ];
         document.getElementById(`container${id}`).value = "";
-        // console.log(this.wagons);
       }
     },
     addSeal(wagonsArr, wagonsArrIndex, id, containersArr) {
       if (wagonsArr.indexOf(wagonsArrIndex)) {
-        // console.log(`indeks wagonu ${wagonsArrIndex}`);
         if (containersArr.indexOf(id)) {
-          // console.log(`to jest indeks kontenera ${id}`);
           const seal = document.getElementById(`seal${wagonsArrIndex}${id}`)
             .value;
           if (
             Object.prototype.hasOwnProperty.call(containersArr[id], "seals")
           ) {
-            // console.log("on juz ma tablice z sealsami");
             containersArr[id].seals.push(seal);
             document.getElementById(`seal${wagonsArrIndex}${id}`).value = "";
-            // console.log(containersArr[id].seals);
           } else {
-            // console.log(seal);
             containersArr[id].seals = [seal];
             document.getElementById(`seal${wagonsArrIndex}${id}`).value = "";
-            // console.log(containersArr[id].seals);
           }
         }
       }
@@ -321,6 +328,6 @@ export default {
 
 <style scoped>
 .green {
-  background-color: green;
+  background-color: rgb(52, 211, 153);
 }
 </style>
