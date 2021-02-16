@@ -1,8 +1,8 @@
 <template>
-  <div class="flex justify-start space-x-4 place-items-center text-xs">
-    <div class="border-2 p-1 flex space-x-1">
+  <div class="flex justify-start space-x-4 place-items-center text-xs ml-3">
+    <div class="border-2 p-1 flex space-x-1 place-items-center">
       <label for="type">Typ wagonu:</label>
-      <select ref="type" id="type" class="text-black">
+      <select ref="type" id="type" class="h-8 text-black">
         <option value="kgns">Kgns</option>
         <option value="sgs" selected>Sgs</option>
         <option value="sggrss">Sggrss</option>
@@ -16,9 +16,9 @@
     <div class="border-2 flex p-1 place-items-center space-x-1">
       <label for="wagon">Wpisz numer wagonu</label>
       <input
-        @input="checkLength"
+        @input="checkWagonLength"
         @keyup.enter="addWagon"
-        class="text-black h-12 text-xs placeholder-gray-400"
+        class="text-black h-8 text-xs placeholder-gray-400"
         maxlength="12"
         id="wagon"
         ref="wagonInput"
@@ -31,7 +31,7 @@
     >
       <img src="../assets/icons/add.svg" alt="add" />
     </button>
-    <span class="text-red-500" v-show="wrongNumber"
+    <span class="text-red-500" v-show="isWagonNumberTooShort"
       >Wpisałeś za krótki nr wagonu lub próbujesz dodać ponownie ten sam
       wagon</span
     >
@@ -39,7 +39,7 @@
   <div class="flex text-xs">
     <ul class="flex flex-col my-4">
       <li
-        class="flex justify-start place-items-center space-x-2  border-gray-400 border-2"
+        class="flex justify-start place-items-center space-x-2 my-1 ml-3 border-black border-2"
         v-for="({ wagonNumber, wagonType, axis, wagonWeight, maxPayload },
         index) in wagons"
         :key="index"
@@ -71,12 +71,12 @@
         >
           <img src="../assets/icons/trash.svg" alt="delete" />
         </button>
-        <div class="border-2 p-1 flex space-x-1">
+        <div class="border-2 p-1 flex space-x-1 place-items-center">
           <label :for="`containerType${index}`">Rozmiar:</label>
           <select
             ref="containerType"
             :id="`containerType${index}`"
-            class="text-black"
+            class="h-8 text-black"
           >
             <option value="20DV">20DV</option>
             <option value="40HC" selected>40HC</option>
@@ -85,12 +85,12 @@
           </select>
         </div>
 
-        <div class="border-2 p-1 flex space-x-1">
+        <div class="border-2 p-1 flex space-x-1 place-items-center">
           <label :for="`emptyOrFull${index}`">Rozmiar:</label>
           <select
             ref="emptyOrFull"
             :id="`emptyOrFull${index}`"
-            class="text-black"
+            class="h-8 text-black"
           >
             <option value="pusty" selected>Pusty</option>
             <option value="ładowny">Ładowny</option>
@@ -99,9 +99,8 @@
 
         <label :for="`container${index}`">Wpisz numer kontenera</label>
         <input
-          @input="checkLength"
           @keyup.enter="addContainer(index, wagons)"
-          class="text-black h-12 text-xs placeholder-gray-400 w-1/12"
+          class="text-black h-8 text-xs placeholder-gray-400 w-24"
           maxlength="11"
           :id="`container${index}`"
           :ref="`containerInput${index}`"
@@ -115,16 +114,18 @@
         </button>
         <ul class="flex place-items-center">
           <li
-            class="border-2 border-gray-900 p-2"
+            class="border-2 border-green-500 p-1 w-32"
             v-for="({ containerNumber, containerType, emptyOrFull, weight },
             idContainer) in wagons[index].kontenery"
             :key="idContainer"
           >
-            <p>{{ containerNumber }}</p>
-            <p>{{ containerType }}</p>
-            <p class="text-green-400 font-bold">{{ emptyOrFull }}</p>
+            <div class="flex flex-col space-y-1 my-1">
+              <p>{{ containerNumber }}</p>
+              <p>{{ containerType }}</p>
+              <p class="text-green-400 font-bold">{{ emptyOrFull }}</p>
+            </div>
             <div
-              class="flex flex-col space-y-2 place-items-center"
+              class="flex flex-col space-y-4 place-items-center"
               v-if="emptyOrFull === full"
             >
               <input
@@ -132,7 +133,7 @@
                   addSeal(wagons, index, idContainer, wagons[index].kontenery)
                 "
                 :id="`seal${index}${idContainer}`"
-                class="text-black h-6 text-xs placeholder-gray-400 w-1/2"
+                class="text-black h-6 text-xs placeholder-gray-400 w-20"
                 type="text"
                 placeholder="plomba"
               />
@@ -151,7 +152,7 @@
                   addWeight(wagons, index, idContainer, wagons[index].kontenery)
                 "
                 :id="`weight${index}${idContainer}`"
-                class="text-black h-6 text-xs placeholder-gray-400 w-1/2"
+                class="text-black h-6 text-xs placeholder-gray-400 w-20"
                 type="text"
                 placeholder="waga KG"
               />
@@ -165,6 +166,19 @@
       </li>
     </ul>
   </div>
+  <div
+    class="flex flex-col justify-items-center place-items-center space-y-4 my-10"
+  >
+    <button class="border-2 rounded-lg p-2 border-white w-1/12">XML</button>
+    <label class="pointer" for="xml">Skopiuj kod</label>
+    <textarea
+      name="xml"
+      id="xml"
+      cols="30"
+      rows="10"
+      class="w-1/3 text-black"
+    ></textarea>
+  </div>
 </template>
 
 <script>
@@ -176,27 +190,28 @@ export default {
   data() {
     return {
       wagons: [],
-      wrongNumber: false,
+      isWagonNumberTooShort: false,
+      isContainerNumberTooShort: false,
       full: "ładowny",
+      wagonPositiveLength: 12,
     };
   },
   methods: {
     addWagon() {
       const wagonNumber = this.$refs.wagonInput.value;
       const wagonType = this.$refs.type.value;
-      const wagonNormalLength = 12;
       let axis = null;
       let wagonWeight = null;
       let maxPayload = null;
       let loadLength = null;
 
       if (
-        wagonNumber.length !== wagonNormalLength ||
+        wagonNumber.length !== this.wagonPositiveLength ||
         this.wagons.some((element) =>
           element.wagonNumber === wagonNumber ? true : false
         )
       ) {
-        this.wrongNumber = true;
+        this.isWagonNumberTooShort = true;
         return;
       } else {
         switch (wagonType) {
@@ -265,9 +280,9 @@ export default {
     deleteWagon(id) {
       this.wagons.splice(id, 1);
     },
-    checkLength() {
-      this.wrongNumber = false;
-      if (this.$refs.wagonInput.value.length === 12) {
+    checkWagonLength() {
+      this.isWagonNumberTooShort = false;
+      if (this.$refs.wagonInput.value.length === this.wagonPositiveLength) {
         this.$refs.wagonInput.classList.add("green");
       } else this.$refs.wagonInput.classList.remove("green");
     },
@@ -318,7 +333,6 @@ export default {
             .value;
           containersArr[id].weight = Number(weight);
           document.getElementById(`weight${wagonsArrIndex}${id}`).value = "";
-          console.log(wagonsArr);
         }
       }
     },
