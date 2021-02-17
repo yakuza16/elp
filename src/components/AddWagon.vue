@@ -63,14 +63,28 @@
             <span class="text-green-400">{{ maxPayload }} ton</span>
           </p>
         </div>
+        <input
+          class="text-green-400 text-lg font-bold bg-transparent w-36"
+          type="text"
+          :value="wagonNumber"
+          readonly
+          :ref="wagonNumber"
+        />
+        <div class="flex flex-col space-y-2">
+          <button
+            class="rounded-lg border-2 px-4 py-1 bg-gray-500 w-12"
+            @click="deleteWagon(index)"
+          >
+            <img src="../assets/icons/pen.svg" alt="delete" />
+          </button>
+          <button
+            class="rounded-lg border-2 px-4 py-1 bg-red-500 w-12"
+            @click="deleteWagon(index)"
+          >
+            <img src="../assets/icons/trash.svg" alt="delete" />
+          </button>
+        </div>
 
-        <span class="text-green-400 text-lg font-bold"> {{ wagonNumber }}</span>
-        <button
-          class="rounded-lg border-2 px-4 py-1 bg-red-500 w-12"
-          @click="deleteWagon(index)"
-        >
-          <img src="../assets/icons/trash.svg" alt="delete" />
-        </button>
         <div class="border-2 p-1 flex space-x-1 place-items-center">
           <label :for="`containerType${index}`">Rozmiar:</label>
           <select
@@ -174,7 +188,7 @@
                 type="text"
                 placeholder="waga KG"
               />
-              <p v-if="weight">
+              <p>
                 Waga towaru:
                 <span class="text-green-400"> {{ weight }} </span> kg
               </p>
