@@ -112,17 +112,34 @@
         >
           <img src="../assets/icons/add.svg" alt="add" />
         </button>
-        <ul class="flex place-items-center">
+        <ul class="flex place-items-center p-1 space-x-2">
           <li
-            class="border-2 border-green-500 p-1 w-32"
+            class="border-2 border-green-500 p-1 w-48"
             v-for="({ containerNumber, containerType, emptyOrFull, weight },
             idContainer) in wagons[index].kontenery"
             :key="idContainer"
           >
-            <div class="flex flex-col space-y-1 my-1">
-              <p>{{ containerNumber }}</p>
-              <p>{{ containerType }}</p>
+            <div
+              class="flex flex-col justify-items-center place-items-center space-y-1 my-1"
+            >
+              <p class="text-base font-bold">
+                <span>{{ containerType }}</span>
+                {{ containerNumber }}
+              </p>
               <p class="text-green-400 font-bold">{{ emptyOrFull }}</p>
+              <button
+                @click="
+                  deleteContainer(
+                    wagons,
+                    index,
+                    wagons[index].kontenery,
+                    idContainer
+                  )
+                "
+                class="rounded-lg border-2 px-4 py-1 bg-red-500 w-12 place-self-end"
+              >
+                <img src="../assets/icons/trash.svg" alt="delete container" />
+              </button>
             </div>
             <div
               class="flex flex-col space-y-4 place-items-center"
@@ -133,12 +150,13 @@
                   addSeal(wagons, index, idContainer, wagons[index].kontenery)
                 "
                 :id="`seal${index}${idContainer}`"
-                class="text-black h-6 text-xs placeholder-gray-400 w-20"
+                class="text-black h-6 text-xs placeholder-gray-400 w-20 mt-2"
                 type="text"
                 placeholder="plomba"
               />
               <ul>
                 <li
+                  class="text-left"
                   v-for="(seal, sealIndex) in wagons[index].kontenery[
                     idContainer
                   ].seals"
@@ -194,6 +212,7 @@ export default {
       isContainerNumberTooShort: false,
       full: "ładowny",
       wagonPositiveLength: 12,
+      containerPositiveLength: 11,
     };
   },
   methods: {
@@ -280,6 +299,13 @@ export default {
     deleteWagon(id) {
       this.wagons.splice(id, 1);
     },
+    deleteContainer(wagons, idWagons, containers, idContainer) {
+      if (wagons.indexOf(idWagons)) {
+        if (containers.indexOf(idContainer)) {
+          this.wagons[idWagons].kontenery.splice(idContainer, 1);
+        }
+      }
+    },
     checkWagonLength() {
       this.isWagonNumberTooShort = false;
       if (this.$refs.wagonInput.value.length === this.wagonPositiveLength) {
@@ -289,7 +315,10 @@ export default {
     addContainer(id, arr) {
       if (arr.indexOf(id)) {
         const containerNumber = document.getElementById(`container${id}`).value;
-        if (!containerNumber) {
+        if (
+          !containerNumber ||
+          containerNumber.length !== this.containerPositiveLength
+        ) {
           return;
         }
         const containerType = document.getElementById(`containerType${id}`)
@@ -343,5 +372,11 @@ export default {
 <style scoped>
 .green {
   background-color: rgb(52, 211, 153);
+}
+
+input:focus,
+select:focus {
+  outline-color: rgb(52, 211, 153);
+  outline-offset: 2px;
 }
 </style>
