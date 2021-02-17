@@ -67,13 +67,14 @@
           class="text-green-400 text-lg font-bold bg-transparent w-36"
           type="text"
           :value="wagonNumber"
+          maxlength="12"
           readonly
-          :ref="wagonNumber"
+          :id="`wagonNumber${index}`"
         />
         <div class="flex flex-col space-y-2">
           <button
             class="rounded-lg border-2 px-4 py-1 bg-gray-500 w-12"
-            @click="deleteWagon(index)"
+            @click="editWagon(index)"
           >
             <img src="../assets/icons/pen.svg" alt="delete" />
           </button>
@@ -312,6 +313,33 @@ export default {
     },
     deleteWagon(id) {
       this.wagons.splice(id, 1);
+    },
+    editWagon(id) {
+      const wagonToEdit = document.getElementById(`wagonNumber${id}`);
+      if (!wagonToEdit) {
+        console.log(`cant find element with ${id}`);
+      } else {
+        if (wagonToEdit.hasAttribute("readonly")) {
+          wagonToEdit.removeAttribute("readonly");
+          wagonToEdit.classList.add("bg-gray-300");
+        } else {
+          if (
+            wagonToEdit.value.length !== this.wagonPositiveLength ||
+            this.wagons.some((element) =>
+              element.wagonNumber === wagonToEdit.value ? true : false
+            )
+          ) {
+            this.isWagonNumberTooShort = true;
+            this.wagons[id].wagonNumber = "";
+          } else {
+            this.isWagonNumberTooShort = false;
+            wagonToEdit.setAttribute("readonly", "true");
+            wagonToEdit.classList.remove("bg-gray-300");
+            this.wagons[id].wagonNumber = wagonToEdit.value;
+            console.log(this.wagons);
+          }
+        }
+      }
     },
     deleteContainer(wagons, idWagons, containers, idContainer) {
       if (wagons.indexOf(idWagons)) {
