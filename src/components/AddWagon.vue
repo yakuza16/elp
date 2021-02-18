@@ -61,6 +61,7 @@
           <p>
             Granica obciążenia:
             <span class="text-green-400">{{ maxPayload }} ton</span>
+            <!-- <span>{{ isOwerweight(wagons, index) }}</span> -->
           </p>
         </div>
         <input
@@ -189,9 +190,12 @@
                 type="text"
                 placeholder="waga KG"
               />
-              <p>
+              <p class="flex flex-col justify-items-center place-items-center">
                 Waga towaru:
                 <span class="text-green-400"> {{ weight }} </span> kg
+                <span v-if="Number(weight) > 28000">
+                  <img src="../assets/icons/warn.svg" alt="warning" />
+                </span>
               </p>
             </div>
           </li>
@@ -408,6 +412,17 @@ export default {
       }
     },
   },
+  // computed: {
+  //   isOwerweight(arr, id) {
+  //     const sumContainersWeight = arr[id].kontenery.reduce(function(
+  //       prevWeight,
+  //       currentWeight
+  //     ) {
+  //       return prevWeight.weight + currentWeight.weight;
+  //     });
+  //     return sumContainersWeight > arr[id].maxPayload ? "za dużo" : "za mało";
+  //   },
+  // },
 };
 </script>
 
