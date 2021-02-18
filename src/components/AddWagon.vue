@@ -61,7 +61,6 @@
           <p>
             Granica obciążenia:
             <span class="text-green-400">{{ maxPayload }} ton</span>
-            <!-- <span>{{ isOwerweight(wagons, index) }}</span> -->
           </p>
         </div>
         <input
@@ -310,6 +309,7 @@ export default {
           wagonWeight,
           maxPayload,
           loadLength,
+          kontenery: [],
         });
         this.$refs.wagonInput.classList.remove("green");
         this.$refs.wagonInput.value = "";
@@ -412,17 +412,6 @@ export default {
       }
     },
   },
-  // computed: {
-  //   isOwerweight(arr, id) {
-  //     const sumContainersWeight = arr[id].kontenery.reduce(function(
-  //       prevWeight,
-  //       currentWeight
-  //     ) {
-  //       return prevWeight.weight + currentWeight.weight;
-  //     });
-  //     return sumContainersWeight > arr[id].maxPayload ? "za dużo" : "za mało";
-  //   },
-  // },
 };
 </script>
 
