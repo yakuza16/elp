@@ -441,18 +441,21 @@ export default {
       <mass>${wagonWeight}</mass>
       <maxWeight>${maxPayload}</maxWeight>
       <axis>${axis}</axis>
-      <loadLength>${loadLength}</loadLength>
-      ${this.generateContainersXMLinfo(kontenery)}
+      <loadLength>${loadLength}</loadLength>${this.generateContainersXMLinfo(
+            kontenery
+          )}
       </wagon>`;
         });
       }
     },
     generateContainersXMLinfo(containersPayload) {
+      let text = "";
       containersPayload.forEach((element) => {
         // console.log(containersPayload, element, index, arr);
         const { containerNumber, containerType, emptyOrFull } = element;
         // console.log(containerNumber, containerType);
-        const containersText = `<uti>
+        const containersText = `
+        <uti>
         <kind>1</kind>
          <codeLength>${
            containerType === "40HC"
@@ -471,8 +474,10 @@ export default {
             : 9700
         }</mass>
         </uti>`;
-        return containersText;
+        console.log(containersText);
+        return (text += containersText);
       });
+      return text;
     },
   },
 };
