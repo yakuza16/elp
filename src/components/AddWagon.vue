@@ -206,7 +206,7 @@
     class="flex flex-col justify-items-center place-items-center space-y-4 my-10"
   >
     <button
-      @click="generateXMLCode"
+      @click="generateXMLCode(wagons)"
       class="border-2 rounded-lg p-2 border-white w-1/12"
     >
       XML
@@ -218,7 +218,7 @@
       id="xml"
       cols="30"
       rows="10"
-      class="w-1/3 text-black"
+      class="w-1/3 text-white bg-gray-900"
     ></textarea>
   </div>
 </template>
@@ -417,63 +417,62 @@ export default {
         }
       }
     },
-    generateXMLCode() {
-      this.$refs.xmlTextarea.value = "hej";
-      console.log(this.wagons);
-    },
-    publicContainerData(payload) {
-      if (payload.netto === "0") return "";
-      else {
-        return `
-         <cargo>
-            <commodity>
-              <NHM>9902000000</NHM>
-            </commodity>
-            <massDeclaredByConsignor>${payload.netto}</massDeclaredByConsignor>
-          </cargo>
-          <seal>
-            <number>1</number>
-            <signs>${payload.Plomba1} ${payload.Plomba2} ${payload.Plomba3}</signs>
-          </seal>
-         `;
+    generateXMLCode(payload) {
+      if (payload.length === 0) {
+        return;
+      } else {
+        this.$refs.xmlTextarea.value = "";
+        // this.$refs.xmlTextarea.value = "hej";
+        // console.log(payload);
+        payload.forEach((element) => {
+          // console.log(element, index, array);
+          const {
+            axis,
+            loadLength,
+            kontenery,
+            maxPayload,
+            wagonNumber,
+            wagonWeight,
+          } = element;
+
+          this.$refs.xmlTextarea.value += `
+      <wagon>
+      <number>${wagonNumber}</number>
+      <mass>${wagonWeight}</mass>
+      <maxWeight>${maxPayload}</maxWeight>
+      <axis>${axis}</axis>
+      <loadLength>${loadLength}</loadLength>
+      ${this.generateContainersXMLinfo(kontenery)}
+      </wagon>`;
+        });
       }
     },
-    publicTrainData(payload) {
-      const paragraph = document.createElement("p");
-      const {
-        axis,
-        kontenery,
-        loadLength,
-        maxPayload,
-        wagonNumber,
-        wagonWeight,
-      } = payload;
-      const { containerNumber, containerType, emptyOrFull, weight } = kontenery;
-
-      paragraph.innerText = `
-        <wagon>
-        <number>${wagonNumber}</number>
-        <mass>${wagonWeight}</mass>
-        <maxWeight>${maxPayload}</maxWeight>
-        <axis>${axis}</axis>
-        <loadLength>${loadLength}</loadLength>
-        <uti>
-          <kind>1</kind>
-          <codeLength>${
-            containerType === "40HC"
-              ? "55"
-              : containerType.includes("20")
-              ? "10"
-              : "50"
-          }</codeLength>
-          <number>${containerNumber}</number>
-          <code>${emptyOrFull === "pusty" ? 9931000000 : 9941000000}</code>
-          <mass>${weight}</mass>
-          ${this.publicContainerData(payload)}
-        </uti>
-      </wagon>
-        `;
-      document.body.appendChild(paragraph);
+    generateContainersXMLinfo(containersPayload) {
+      containersPayload.forEach((element) => {
+        // console.log(containersPayload, element, index, arr);
+        const { containerNumber, containerType, emptyOrFull } = element;
+        // console.log(containerNumber, containerType);
+        const containersText = `<uti>
+        <kind>1</kind>
+         <codeLength>${
+           containerType === "40HC"
+             ? 55
+             : containerType.includes("20")
+             ? 10
+             : 50
+         }</codeLength>
+        <number>${containerNumber}</number>
+        <code>${emptyOrFull === "pusty" ? 9931000000 : 9941000000}</code>
+        <mass>${
+          containerType === "40HC"
+            ? 3900
+            : containerType.includes("20")
+            ? 2200
+            : 9700
+        }</mass>
+        </uti>`;
+        return containersText;
+      });
     },
   },
 };
