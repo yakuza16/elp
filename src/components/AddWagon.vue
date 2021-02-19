@@ -18,7 +18,7 @@
       <input
         @input="checkWagonLength"
         @keyup.enter="addWagon"
-        class="text-black h-8 text-xs placeholder-gray-400"
+        class="text-black h-8 text-xs placeholder-gray-400 p-1"
         maxlength="12"
         id="wagon"
         ref="wagonInput"
@@ -64,7 +64,7 @@
           </p>
         </div>
         <input
-          class="text-green-400 text-lg font-bold bg-transparent w-36"
+          class="text-green-400 text-lg font-bold bg-transparent w-36 p-1"
           type="text"
           :value="wagonNumber"
           maxlength="12"
@@ -115,7 +115,7 @@
         <label :for="`container${index}`">Wpisz numer kontenera</label>
         <input
           @keyup.enter="addContainer(index, wagons)"
-          class="text-black h-8 text-xs placeholder-gray-400 w-24"
+          class="text-black h-8 text-xs placeholder-gray-400 w-24 p-1"
           maxlength="11"
           :id="`container${index}`"
           :ref="`containerInput${index}`"
@@ -165,7 +165,7 @@
                   addSeal(wagons, index, idContainer, wagons[index].kontenery)
                 "
                 :id="`seal${index}${idContainer}`"
-                class="text-black h-6 text-xs placeholder-gray-400 w-20 mt-2"
+                class="text-black h-6 text-xs placeholder-gray-400 w-20 mt-2 p-1"
                 type="text"
                 placeholder="plomba"
               />
@@ -185,7 +185,7 @@
                   addWeight(wagons, index, idContainer, wagons[index].kontenery)
                 "
                 :id="`weight${index}${idContainer}`"
-                class="text-black h-6 text-xs placeholder-gray-400 w-20"
+                class="text-black h-6 text-xs placeholder-gray-400 w-20 p-1"
                 type="text"
                 placeholder="waga KG"
               />
@@ -205,9 +205,15 @@
   <div
     class="flex flex-col justify-items-center place-items-center space-y-4 my-10"
   >
-    <button class="border-2 rounded-lg p-2 border-white w-1/12">XML</button>
+    <button
+      @click="generateXMLCode"
+      class="border-2 rounded-lg p-2 border-white w-1/12"
+    >
+      XML
+    </button>
     <label class="pointer" for="xml">Skopiuj kod</label>
     <textarea
+      ref="xmlTextarea"
       name="xml"
       id="xml"
       cols="30"
@@ -410,6 +416,64 @@ export default {
           document.getElementById(`weight${wagonsArrIndex}${id}`).value = "";
         }
       }
+    },
+    generateXMLCode() {
+      this.$refs.xmlTextarea.value = "hej";
+      console.log(this.wagons);
+    },
+    publicContainerData(payload) {
+      if (payload.netto === "0") return "";
+      else {
+        return `
+         <cargo>
+            <commodity>
+              <NHM>9902000000</NHM>
+            </commodity>
+            <massDeclaredByConsignor>${payload.netto}</massDeclaredByConsignor>
+          </cargo>
+          <seal>
+            <number>1</number>
+            <signs>${payload.Plomba1} ${payload.Plomba2} ${payload.Plomba3}</signs>
+          </seal>
+         `;
+      }
+    },
+    publicTrainData(payload) {
+      const paragraph = document.createElement("p");
+      const {
+        axis,
+        kontenery,
+        loadLength,
+        maxPayload,
+        wagonNumber,
+        wagonWeight,
+      } = payload;
+      const { containerNumber, containerType, emptyOrFull, weight } = kontenery;
+
+      paragraph.innerText = `
+        <wagon>
+        <number>${wagonNumber}</number>
+        <mass>${wagonWeight}</mass>
+        <maxWeight>${maxPayload}</maxWeight>
+        <axis>${axis}</axis>
+        <loadLength>${loadLength}</loadLength>
+        <uti>
+          <kind>1</kind>
+          <codeLength>${
+            containerType === "40HC"
+              ? "55"
+              : containerType.includes("20")
+              ? "10"
+              : "50"
+          }</codeLength>
+          <number>${containerNumber}</number>
+          <code>${emptyOrFull === "pusty" ? 9931000000 : 9941000000}</code>
+          <mass>${weight}</mass>
+          ${this.publicContainerData(payload)}
+        </uti>
+      </wagon>
+        `;
+      document.body.appendChild(paragraph);
     },
   },
 };
