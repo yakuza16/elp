@@ -22,6 +22,30 @@
 
 <script>
 export default {
+  data() {
+    return {
+      containerLengthCodes: {
+        twentyFootCodeLength: 10,
+        fortyFootHCCodeLength: 55,
+        fotyFootDVCodeLength: 50,
+      },
+      containerTypes: {
+        fortyFootHC: "40HC",
+        fotyFootDV: "40DV",
+        fourtyFive: "45HC",
+        twentyFoot: "20DV",
+      },
+      containerWeight: {
+        twentyFootWeight: 2200,
+        fortyFootHCWeight: 4000,
+        fotyFootDVWeight: 3700,
+      },
+      emptyOrFullCodes: {
+        empty: 9931000000,
+        full: 9941000000,
+      },
+    };
+  },
   props: ["payload"],
   methods: {
     generateXMLCode(payload) {
@@ -60,25 +84,37 @@ export default {
       containersPayload.forEach((element) => {
         // console.log(containersPayload, element, index, arr);
         const { containerNumber, containerType, emptyOrFull } = element;
+        const { fortyFootHC, fotyFootDV, twentyFoot } = this.containerTypes;
+        const { empty, full } = this.emptyOrFullCodes;
+        const {
+          twentyFootCodeLength,
+          fortyFootHCCodeLength,
+          fotyFootDVCodeLength,
+        } = this.containerLengthCodes;
+        const {
+          twentyFootWeight,
+          fortyFootHCWeight,
+          fotyFootDVWeight,
+        } = this.containerWeight;
         // console.log(containerNumber, containerType);
         const containersText = `
         <uti>
         <kind>1</kind>
          <codeLength>${
-           containerType === "40HC"
-             ? 55
-             : containerType.includes("20")
-             ? 10
-             : 50
+           containerType === fotyFootDV
+             ? fotyFootDVCodeLength
+             : containerType.includes(twentyFoot)
+             ? twentyFootCodeLength
+             : fortyFootHCCodeLength
          }</codeLength>
         <number>${containerNumber}</number>
-        <code>${emptyOrFull === "pusty" ? 9931000000 : 9941000000}</code>
+        <code>${emptyOrFull === "pusty" ? empty : full}</code>
         <mass>${
-          containerType === "40HC"
-            ? 3900
-            : containerType.includes("20")
-            ? 2200
-            : 9700
+          containerType === fortyFootHC
+            ? fortyFootHCWeight
+            : containerType.includes(twentyFoot)
+            ? twentyFootWeight
+            : fotyFootDVWeight
         }</mass>
         </uti>`;
         console.log(containersText);
