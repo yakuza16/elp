@@ -8,8 +8,9 @@
     >
       XML
     </button>
-    <label class="pointer" for="xml">Skopiuj kod</label>
+    <label @click="copyXMLtext" class="pointer" for="xml">Skopiuj kod</label>
     <textarea
+      @click="copyXMLtext"
       ref="xmlTextarea"
       name="xml"
       id="xml"
@@ -66,8 +67,7 @@ export default {
             wagonWeight,
           } = element;
 
-          this.$refs.xmlTextarea.value += `
-      <wagon>
+          this.$refs.xmlTextarea.value += `<wagon>
       <number>${wagonNumber}</number>
       <mass>${wagonWeight}</mass>
       <maxWeight>${maxPayload}</maxWeight>
@@ -156,6 +156,10 @@ export default {
         return (signs += sealText);
       });
       return signs;
+    },
+    copyXMLtext() {
+      this.$refs.xmlTextarea.select();
+      document.execCommand("copy");
     },
   },
 };
