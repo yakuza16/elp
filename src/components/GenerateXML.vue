@@ -15,7 +15,7 @@
       id="xml"
       cols="30"
       rows="10"
-      class="w-1/3 text-white bg-gray-900"
+      class="w-2/3 text-white bg-gray-900"
     ></textarea>
   </div>
 </template>
@@ -83,7 +83,13 @@ export default {
       let text = "";
       containersPayload.forEach((element) => {
         // console.log(containersPayload, element, index, arr);
-        const { containerNumber, containerType, emptyOrFull, weight } = element;
+        const {
+          containerNumber,
+          containerType,
+          emptyOrFull,
+          weight,
+          seals,
+        } = element;
         const { fortyFootHC, fotyFootDV, twentyFoot } = this.containerTypes;
         const { empty, full } = this.emptyOrFullCodes;
         const {
@@ -96,8 +102,12 @@ export default {
           fortyFootHCWeight,
           fotyFootDVWeight,
         } = this.containerWeight;
-        const generateCargoInfo = this.generateContainerCargoXMLInfo(weight);
+        const generateCargoInfo = this.generateContainerCargoXMLInfo(
+          weight,
+          seals
+        );
         // console.log(containerNumber, containerType);
+        console.log(seals);
         const containersText = `
         <uti>
         <kind>1</kind>
@@ -116,21 +126,36 @@ export default {
             : containerType.includes(twentyFoot)
             ? twentyFootWeight
             : fotyFootDVWeight
-        }</mass>${emptyOrFull === "pusty" ? null : generateCargoInfo}
+        }</mass>${emptyOrFull === "pusty" ? "".trim() : generateCargoInfo}
         </uti>`;
         console.log(containersText);
         return (text += containersText);
       });
       return text;
     },
-    generateContainerCargoXMLInfo(cargoWeight) {
-      return `
-        <cargo>
+    generateContainerCargoXMLInfo(cargoWeight, seals) {
+      if (!seals) {
+        return;
+      } else {
+        return `
+      <cargo>
           <commodity>
             <NHM>9902000000</NHM>
-          </commodity>
-<massDeclaredByConsignor>${cargoWeight}</massDeclaredByConsignor>
-        </cargo>`;
+          </commodity><massDeclaredByConsignor>${cargoWeight}</massDeclaredByConsignor>
+        </cargo>
+        <seal>
+          ${this.generateSealsXMLInfo(seals)}
+        </seal>`;
+      }
+    },
+    generateSealsXMLInfo(sealsList) {
+      let signs = "";
+      sealsList.forEach((seal, index) => {
+        let sealText = `<number>${index + 1}</number>
+        <signs>${seal}</signs>`;
+        return (signs += sealText);
+      });
+      return signs;
     },
   },
 };
