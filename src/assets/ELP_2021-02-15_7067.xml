@@ -52,6 +52,23 @@
       <maxWeight>60</maxWeight>
       <axis>4</axis>
       <loadLength>60</loadLength>
+            <uti>
+        <kind>1</kind>
+        <codeLength>10</codeLength>
+        <number>HASU1510031</number>
+        <code>9941000000</code>
+        <mass>2200</mass>
+        <cargo>
+          <commodity>
+            <NHM>9902000000</NHM>
+          </commodity>
+          <massDeclaredByConsignor>2072</massDeclaredByConsignor>
+        </cargo>
+        <seal>
+          <number>1</number>
+          <signs>CN6403958</signs>
+        </seal>
+      </uti>
       <uti>
         <kind>1</kind>
         <codeLength>55</codeLength>

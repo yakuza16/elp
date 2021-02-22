@@ -83,7 +83,7 @@ export default {
       let text = "";
       containersPayload.forEach((element) => {
         // console.log(containersPayload, element, index, arr);
-        const { containerNumber, containerType, emptyOrFull } = element;
+        const { containerNumber, containerType, emptyOrFull, weight } = element;
         const { fortyFootHC, fotyFootDV, twentyFoot } = this.containerTypes;
         const { empty, full } = this.emptyOrFullCodes;
         const {
@@ -96,6 +96,7 @@ export default {
           fortyFootHCWeight,
           fotyFootDVWeight,
         } = this.containerWeight;
+        const generateCargoInfo = this.generateContainerCargoXMLInfo(weight);
         // console.log(containerNumber, containerType);
         const containersText = `
         <uti>
@@ -115,12 +116,21 @@ export default {
             : containerType.includes(twentyFoot)
             ? twentyFootWeight
             : fotyFootDVWeight
-        }</mass>
+        }</mass>${emptyOrFull === "pusty" ? null : generateCargoInfo}
         </uti>`;
         console.log(containersText);
         return (text += containersText);
       });
       return text;
+    },
+    generateContainerCargoXMLInfo(cargoWeight) {
+      return `
+        <cargo>
+          <commodity>
+            <NHM>9902000000</NHM>
+          </commodity>
+<massDeclaredByConsignor>${cargoWeight}</massDeclaredByConsignor>
+        </cargo>`;
     },
   },
 };
