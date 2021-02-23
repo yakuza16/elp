@@ -1,5 +1,5 @@
 <template>
-  <div class="flex mb-10 place-content-center text-sm">
+  <div id="inputsParentWrapper" class="flex mb-10 place-content-center text-sm">
     <div class="w-1/3 p-4 flex flex-col place-items-end">
       <h1>Nadawca</h1>
       <div class="border-2 flex p-1 place-items-center space-x-1">
@@ -157,15 +157,16 @@
           />
         </div>
       </div>
-      <button @click="show">EEEE</button>
     </div>
   </div>
+  <button @click="saveShipmentInfo">Zapisz dane nadawcy i odbiorcy</button>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      isEditable: true,
       shipmentInfo: {
         sender: {
           regon: () => this.$refs.senderRegon.value,
@@ -188,12 +189,79 @@ export default {
           sindingDestinationStation: () =>
             this.$refs.sindingDestinationStation.value,
         },
+        shipmentInfoXML: null,
       },
     };
   },
   methods: {
-    show() {
-      console.log(this.shipmentInfo.receiver.sindingDestinationStation());
+    generateShipmentInformations() {
+      const shipmentInfo = `<shipmentBaseInfo>
+    <group>True</group>
+    <kind>country</kind>
+    <type>UTI</type>
+    <consignor>
+      <identifier>
+        <countryCode>PL</countryCode>
+        <identifier>${this.shipmentInfo.sender.regon()}</identifier>
+        <organizationalUnit>1</organizationalUnit>
+      </identifier>
+      <name>${this.shipmentInfo.sender.company()}</name>
+      <NIP>${this.shipmentInfo.sender.nip()}</NIP>
+      <address>
+        <street>${this.shipmentInfo.sender.street()}</street>
+        <city>${this.shipmentInfo.sender.city()}</city>
+        <postalCode>${this.shipmentInfo.sender.postalCode()}</postalCode>
+      </address>
+      <contact />
+    </consignor>
+    <consignee>
+      <identifier>
+        <countryCode>PL</countryCode>
+        <identifier>${this.shipmentInfo.receiver.regon()}</identifier>
+      </identifier>
+      <name>${this.shipmentInfo.receiver.company()}</name>
+      <NIP>${this.shipmentInfo.receiver.nip()}</NIP>
+      <address>
+        <street>${this.shipmentInfo.receiver.street()}</street>
+        <city>${this.shipmentInfo.receiver.city()}</city>
+        <postalCode>${this.shipmentInfo.receiver.postalCode()}</postalCode>
+      </address>
+      <contact />
+    </consignee>
+    <dispatchStation>
+      <administration>51</administration>
+      <stationCode>${this.shipmentInfo.sender.dispatchStation()}</stationCode>
+      <siding>${this.shipmentInfo.sender.sindingDispatchStation()}</siding>
+    </dispatchStation>
+    <destinationStation>
+      <administration>51</administration>
+      <stationCode>${this.shipmentInfo.receiver.destinationStation()}</stationCode>
+      <siding>${this.shipmentInfo.receiver.sindingDestinationStation()}</siding>
+    </destinationStation>
+    <registrationMethod>X</registrationMethod>
+  </shipmentBaseInfo>
+      `;
+      return shipmentInfo;
+    },
+    saveShipmentInfo() {
+      const shipmentInputsParent = document.getElementById(
+        "inputsParentWrapper"
+      );
+      const allShipmentInputs = shipmentInputsParent.getElementsByTagName(
+        "input"
+      );
+      if (this.isEditable === true) {
+        allShipmentInputs.forEach((input) => {
+          input.setAttribute("disabled", true);
+          this.shipmentInfoXML = this.generateShipmentInformations();
+          this.isEditable = false;
+        });
+      } else {
+        this.isEditable = true;
+        allShipmentInputs.forEach((input) => {
+          input.removeAttribute("disabled");
+        });
+      }
     },
   },
 };
