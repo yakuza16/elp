@@ -54,10 +54,7 @@ export default {
         return;
       } else {
         this.$refs.xmlTextarea.value = "";
-        // this.$refs.xmlTextarea.value = "hej";
-        // console.log(payload);
         payload.forEach((element) => {
-          // console.log(element, index, array);
           const {
             axis,
             loadLength,
@@ -82,7 +79,6 @@ export default {
     generateContainersXMLinfo(containersPayload) {
       let text = "";
       containersPayload.forEach((element) => {
-        // console.log(containersPayload, element, index, arr);
         const {
           containerNumber,
           containerType,
@@ -106,8 +102,6 @@ export default {
           weight,
           seals
         );
-        // console.log(containerNumber, containerType);
-        console.log(seals);
         const containersText = `
         <uti>
         <kind>1</kind>
@@ -128,7 +122,6 @@ export default {
             : fotyFootDVWeight
         }</mass>${emptyOrFull === "pusty" ? "".trim() : generateCargoInfo}
         </uti>`;
-        console.log(containersText);
         return (text += containersText);
       });
       return text;
@@ -143,16 +136,16 @@ export default {
             <NHM>9902000000</NHM>
           </commodity><massDeclaredByConsignor>${cargoWeight}</massDeclaredByConsignor>
         </cargo>
-        <seal>
-          ${this.generateSealsXMLInfo(seals)}
-        </seal>`;
+          ${this.generateSealsXMLInfo(seals)}`;
       }
     },
     generateSealsXMLInfo(sealsList) {
       let signs = "";
-      sealsList.forEach((seal, index) => {
-        let sealText = `<number>${index + 1}</number>
-        <signs>${seal}</signs>`;
+      sealsList.forEach((seal) => {
+        let sealText = `<seal>
+        <number>1</number>
+        <signs>${seal}</signs>
+        </seal>`;
         return (signs += sealText);
       });
       return signs;

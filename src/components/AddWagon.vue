@@ -1,4 +1,5 @@
 <template>
+  <ShipmentBaseInfo />
   <div class="flex justify-start space-x-4 place-items-center text-xs ml-3">
     <div class="border-2 p-1 flex space-x-1 place-items-center">
       <label for="type">Typ wagonu:</label>
@@ -207,6 +208,7 @@
 
 <script>
 import GenerateXML from "../components/GenerateXML";
+import ShipmentBaseInfo from "../components/ShipmentBaseInfo";
 
 export default {
   name: "AddWagon",
@@ -215,6 +217,7 @@ export default {
   },
   components: {
     GenerateXML,
+    ShipmentBaseInfo,
   },
   data() {
     return {
@@ -333,7 +336,6 @@ export default {
             wagonToEdit.setAttribute("readonly", "true");
             wagonToEdit.classList.remove("bg-gray-300");
             this.wagons[id].wagonNumber = wagonToEdit.value;
-            console.log(this.wagons);
           }
         }
       }
