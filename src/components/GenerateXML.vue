@@ -23,12 +23,14 @@
 
 <script>
 export default {
+  props: ["payload", "shipment"],
   data() {
     return {
       containerLengthCodes: {
         twentyFootCodeLength: 10,
         fortyFootHCCodeLength: 55,
         fotyFootDVCodeLength: 50,
+        shipment: this.$props.shipment,
       },
       containerTypes: {
         fortyFootHC: "40HC",
@@ -47,13 +49,13 @@ export default {
       },
     };
   },
-  props: ["payload"],
+
   methods: {
     generateXMLCode(payload) {
       if (payload.length === 0) {
         return;
       } else {
-        this.$refs.xmlTextarea.value = "";
+        this.$refs.xmlTextarea.value = this.shipment;
         payload.forEach((element) => {
           const {
             axis,
@@ -63,7 +65,6 @@ export default {
             wagonNumber,
             wagonWeight,
           } = element;
-
           this.$refs.xmlTextarea.value += `<wagon>
       <number>${wagonNumber}</number>
       <mass>${wagonWeight}</mass>

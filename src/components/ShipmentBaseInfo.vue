@@ -164,6 +164,7 @@
 
 <script>
 export default {
+  emits: ["createShipmentInfo"],
   data() {
     return {
       isEditable: true,
@@ -255,6 +256,7 @@ export default {
           input.setAttribute("disabled", true);
           this.shipmentInfoXML = this.generateShipmentInformations();
           this.isEditable = false;
+          this.onClickButton();
         });
       } else {
         this.isEditable = true;
@@ -262,6 +264,9 @@ export default {
           input.removeAttribute("disabled");
         });
       }
+    },
+    onClickButton() {
+      this.$emit("createShipmentInfo", this.shipmentInfoXML);
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <ShipmentBaseInfo />
+  <ShipmentBaseInfo @createShipmentInfo="printShipmentInfo" />
   <div class="flex justify-start space-x-4 place-items-center text-xs ml-3">
     <div class="border-2 p-1 flex space-x-1 place-items-center">
       <label for="type">Typ wagonu:</label>
@@ -203,7 +203,7 @@
       </li>
     </ul>
   </div>
-  <GenerateXML :payload="wagons" />
+  <GenerateXML :payload="wagons" :shipment="baseShipmentInfo" />
 </template>
 
 <script>
@@ -227,6 +227,7 @@ export default {
       full: "ładowny",
       wagonPositiveLength: 12,
       containerPositiveLength: 11,
+      baseShipmentInfo: null,
     };
   },
   methods: {
@@ -405,6 +406,10 @@ export default {
           document.getElementById(`weight${wagonsArrIndex}${id}`).value = "";
         }
       }
+    },
+    printShipmentInfo(shipmentInfo) {
+      this.baseShipmentInfo = shipmentInfo;
+      console.log(this.baseShipmentInfo);
     },
   },
 };
