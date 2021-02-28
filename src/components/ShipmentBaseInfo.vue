@@ -161,7 +161,8 @@
       </div>
     </div>
     <button
-      class="rounded-lg border-2 px-4 py-1 w-14 bg-red-500"
+      class="rounded-lg border-2 px-4 py-1 w-14 "
+      :class="[isEditable ? locked : unlocked]"
       ref="acceptShipment"
       @click="saveShipmentInfo"
     >
@@ -186,6 +187,8 @@ export default {
   emits: ["createShipmentInfo"],
   data() {
     return {
+      locked: "bg-red-500",
+      unlocked: "bg-green-500",
       isEditable: true,
       shipmentInfo: {
         sender: {
@@ -276,15 +279,15 @@ export default {
         allShipmentInputs.forEach((input) => {
           input.setAttribute("disabled", true);
           this.shipmentInfoXML = this.generateShipmentInformations();
-          this.$refs.acceptShipment.classList.remove("bg-red-500");
-          this.$refs.acceptShipment.classList.add("bg-green-500");
+          // this.$refs.acceptShipment.classList.remove("bg-red-500");
+          // this.$refs.acceptShipment.classList.add("bg-green-500");
           this.isEditable = false;
           this.onClickButton();
         });
       } else {
         this.isEditable = true;
-        this.$refs.acceptShipment.classList.remove("bg-green-500");
-        this.$refs.acceptShipment.classList.add("bg-red-500");
+        // this.$refs.acceptShipment.classList.remove("bg-green-500");
+        // this.$refs.acceptShipment.classList.add("bg-red-500");
         allShipmentInputs.forEach((input) => {
           input.removeAttribute("disabled");
         });
