@@ -279,15 +279,11 @@ export default {
         allShipmentInputs.forEach((input) => {
           input.setAttribute("disabled", true);
           this.shipmentInfoXML = this.generateShipmentInformations();
-          // this.$refs.acceptShipment.classList.remove("bg-red-500");
-          // this.$refs.acceptShipment.classList.add("bg-green-500");
           this.isEditable = false;
           this.onClickButton();
         });
       } else {
         this.isEditable = true;
-        // this.$refs.acceptShipment.classList.remove("bg-green-500");
-        // this.$refs.acceptShipment.classList.add("bg-red-500");
         allShipmentInputs.forEach((input) => {
           input.removeAttribute("disabled");
         });

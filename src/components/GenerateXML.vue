@@ -2,13 +2,12 @@
   <div
     class="flex flex-col justify-items-center place-items-center space-y-4 my-10"
   >
-    <button
-      @click="generateXMLCode(payload)"
-      class="border-2 rounded-lg p-2 border-white w-1/12"
-    >
-      XML
+    <button @click="generateXMLCode(payload)" class="w-20">
+      <img src="../assets/icons/xmlIcon.svg" alt="" />
     </button>
-    <label @click="copyXMLtext" class="pointer" for="xml">Skopiuj kod</label>
+    <label @click="copyXMLtext" class="cursor-pointer" for="xml"
+      >Skopiuj kod</label
+    >
     <textarea
       @click="copyXMLtext"
       ref="xmlTextarea"
