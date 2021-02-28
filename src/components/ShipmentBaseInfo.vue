@@ -1,165 +1,184 @@
 <template>
-  <div id="inputsParentWrapper" class="flex mb-10 place-content-center text-sm">
-    <div class="w-1/3 p-4 flex flex-col place-items-end">
-      <h1>Nadawca</h1>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consignorRegon">REGON</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consignorRegon"
-          ref="senderRegon"
-        />
-      </div>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consignorCompanyName">Nazwa firmy</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consignorCompanyName"
-          ref="senderCompany"
-        />
-      </div>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consignorNIP">NIP</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consignorNIP"
-          ref="senderNip"
-        />
-      </div>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consignorStreet">Ulica</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consignorStreet"
-          ref="senderStreet"
-        />
-      </div>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consignorCity">Miasto</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consignorCity"
-          ref="senderCity"
-        />
-      </div>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consignorPostalCode">Kod pocztowy</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consignorPostalCode"
-          ref="senderPostalCode"
-        />
-      </div>
-      <div class="flex bg-gray-700">
+  <div class="border-b-2 py-2">
+    <div id="inputsParentWrapper" class="flex mb-10 place-content-center">
+      <div class="w-1/3 p-4 flex flex-col place-items-end">
+        <h1>Nadawca</h1>
         <div class="border-2 flex p-1 place-items-center space-x-1">
-          <label for="dispatchStation">Kod stacji nadania</label>
+          <label for="consignorRegon">REGON</label>
           <input
             class="text-black h-8 text-xs placeholder-gray-400 p-1"
             type="text"
-            id="dispatchStation"
-            ref="dispatchStationCode"
+            id="consignorRegon"
+            ref="senderRegon"
           />
         </div>
         <div class="border-2 flex p-1 place-items-center space-x-1">
-          <label for="sindingDispatchStation"
-            >Miejsce podstawienia na stacji nadania</label
-          >
+          <label for="consignorCompanyName">Nazwa firmy</label>
           <input
             class="text-black h-8 text-xs placeholder-gray-400 p-1"
             type="text"
-            id="sindingDispatchStation"
-            ref="sindingDispatchStation"
+            id="consignorCompanyName"
+            ref="senderCompany"
           />
+        </div>
+        <div class="border-2 flex p-1 place-items-center space-x-1">
+          <label for="consignorNIP">NIP</label>
+          <input
+            class="text-black h-8 text-xs placeholder-gray-400 p-1"
+            type="text"
+            id="consignorNIP"
+            ref="senderNip"
+          />
+        </div>
+        <div class="border-2 flex p-1 place-items-center space-x-1">
+          <label for="consignorStreet">Ulica</label>
+          <input
+            class="text-black h-8 text-xs placeholder-gray-400 p-1"
+            type="text"
+            id="consignorStreet"
+            ref="senderStreet"
+          />
+        </div>
+        <div class="border-2 flex p-1 place-items-center space-x-1">
+          <label for="consignorCity">Miasto</label>
+          <input
+            class="text-black h-8 text-xs placeholder-gray-400 p-1"
+            type="text"
+            id="consignorCity"
+            ref="senderCity"
+          />
+        </div>
+        <div class="border-2 flex p-1 place-items-center space-x-1">
+          <label for="consignorPostalCode">Kod pocztowy</label>
+          <input
+            class="text-black h-8 text-xs placeholder-gray-400 p-1"
+            type="text"
+            id="consignorPostalCode"
+            ref="senderPostalCode"
+          />
+        </div>
+        <div class="flex bg-gray-700">
+          <div class="border-2 flex p-1 place-items-center space-x-1">
+            <label for="dispatchStation">Kod stacji nadania</label>
+            <input
+              class="text-black h-8 text-xs placeholder-gray-400 p-1"
+              type="text"
+              id="dispatchStation"
+              ref="dispatchStationCode"
+            />
+          </div>
+          <div class="border-2 flex p-1 place-items-center space-x-1">
+            <label for="sindingDispatchStation"
+              >Miejsce podstawienia na stacji nadania</label
+            >
+            <input
+              class="text-black h-8 text-xs placeholder-gray-400 p-1"
+              type="text"
+              id="sindingDispatchStation"
+              ref="sindingDispatchStation"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="w-1/3 p-4 flex flex-col place-items-end">
+        <h1>Odbiorca</h1>
+        <div class="border-2 flex p-1 place-items-center space-x-1">
+          <label for="consigneeRegon">REGON</label>
+          <input
+            class="text-black h-8 text-xs placeholder-gray-400 p-1"
+            type="text"
+            id="consigneeRegon"
+            ref="receiverRegon"
+          />
+        </div>
+        <div class="border-2 flex p-1 place-items-center space-x-1">
+          <label for="consigneeCompanyName">Nazwa firmy</label>
+          <input
+            class="text-black h-8 text-xs placeholder-gray-400 p-1"
+            type="text"
+            id="consigneeCompanyName"
+            ref="receiverCompany"
+          />
+        </div>
+        <div class="border-2 flex p-1 place-items-center space-x-1">
+          <label for="consigneeNIP">NIP</label>
+          <input
+            class="text-black h-8 text-xs placeholder-gray-400 p-1"
+            type="text"
+            id="consigneeNIP"
+            ref="receiverNip"
+          />
+        </div>
+        <div class="border-2 flex p-1 place-items-center space-x-1">
+          <label for="consigneeStreet">Ulica</label>
+          <input
+            class="text-black h-8 text-xs placeholder-gray-400 p-1"
+            type="text"
+            id="consigneeStreet"
+            ref="receiverStreet"
+          />
+        </div>
+        <div class="border-2 flex p-1 place-items-center space-x-1">
+          <label for="consigneeCity">Miasto</label>
+          <input
+            class="text-black h-8 text-xs placeholder-gray-400 p-1"
+            type="text"
+            id="consigneeCity"
+            ref="receiverCity"
+          />
+        </div>
+        <div class="border-2 flex p-1 place-items-center space-x-1">
+          <label for="consigneePostalCode">Kod pocztowy</label>
+          <input
+            class="text-black h-8 text-xs placeholder-gray-400 p-1"
+            type="text"
+            id="consigneePostalCode"
+            ref="receiverPostalCode"
+          />
+        </div>
+        <div class="flex bg-gray-700">
+          <div class="border-2 flex p-1 place-items-center space-x-1">
+            <label for="destinationStation">Kod stacji odbioru</label>
+            <input
+              class="text-black h-8 text-xs placeholder-gray-400 p-1"
+              type="text"
+              id="destinationStation"
+              ref="destinationStationCode"
+            />
+          </div>
+          <div class="border-2 flex p-1 place-items-center space-x-1">
+            <label for="sindingDestinationStation"
+              >Miejsce podstawienia na stacji odbioru</label
+            >
+            <input
+              class="text-black h-8 text-xs placeholder-gray-400 p-1"
+              type="text"
+              id="sindingDestinationStation"
+              ref="sindingDestinationStation"
+            />
+          </div>
         </div>
       </div>
     </div>
-    <div class="w-1/3 p-4 flex flex-col place-items-end">
-      <h1>Odbiorca</h1>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consigneeRegon">REGON</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consigneeRegon"
-          ref="receiverRegon"
-        />
-      </div>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consigneeCompanyName">Nazwa firmy</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consigneeCompanyName"
-          ref="receiverCompany"
-        />
-      </div>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consigneeNIP">NIP</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consigneeNIP"
-          ref="receiverNip"
-        />
-      </div>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consigneeStreet">Ulica</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consigneeStreet"
-          ref="receiverStreet"
-        />
-      </div>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consigneeCity">Miasto</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consigneeCity"
-          ref="receiverCity"
-        />
-      </div>
-      <div class="border-2 flex p-1 place-items-center space-x-1">
-        <label for="consigneePostalCode">Kod pocztowy</label>
-        <input
-          class="text-black h-8 text-xs placeholder-gray-400 p-1"
-          type="text"
-          id="consigneePostalCode"
-          ref="receiverPostalCode"
-        />
-      </div>
-      <div class="flex bg-gray-700">
-        <div class="border-2 flex p-1 place-items-center space-x-1">
-          <label for="destinationStation">Kod stacji odbioru</label>
-          <input
-            class="text-black h-8 text-xs placeholder-gray-400 p-1"
-            type="text"
-            id="destinationStation"
-            ref="destinationStationCode"
-          />
-        </div>
-        <div class="border-2 flex p-1 place-items-center space-x-1">
-          <label for="sindingDestinationStation"
-            >Miejsce podstawienia na stacji odbioru</label
-          >
-          <input
-            class="text-black h-8 text-xs placeholder-gray-400 p-1"
-            type="text"
-            id="sindingDestinationStation"
-            ref="sindingDestinationStation"
-          />
-        </div>
-      </div>
-    </div>
+    <button
+      class="rounded-lg border-2 px-4 py-1 w-14 bg-red-500"
+      ref="acceptShipment"
+      @click="saveShipmentInfo"
+    >
+      <img
+        v-show="isEditable"
+        class="w-full"
+        src="../assets/icons/open-lock.svg"
+        alt="lock"
+      />
+      <img
+        v-show="!isEditable"
+        class="w-full"
+        src="../assets/icons/closed-lock.svg"
+        alt="lock"
+      />
+    </button>
   </div>
-  <button @click="saveShipmentInfo">Zapisz dane nadawcy i odbiorcy</button>
 </template>
 
 <script>
@@ -196,7 +215,9 @@ export default {
   },
   methods: {
     generateShipmentInformations() {
-      const shipmentInfo = `<shipmentBaseInfo>
+      const shipmentInfo = `<?xml version="1.0"?>
+<ns2:shipment xmlns:ns3="http://www.pkp-cargo.pl/elpext" xmlns:ns2="http://www.pkp-cargo.pl/elp">
+      <shipmentBaseInfo>
     <group>True</group>
     <kind>country</kind>
     <type>UTI</type>
@@ -255,11 +276,15 @@ export default {
         allShipmentInputs.forEach((input) => {
           input.setAttribute("disabled", true);
           this.shipmentInfoXML = this.generateShipmentInformations();
+          this.$refs.acceptShipment.classList.remove("bg-red-500");
+          this.$refs.acceptShipment.classList.add("bg-green-500");
           this.isEditable = false;
           this.onClickButton();
         });
       } else {
         this.isEditable = true;
+        this.$refs.acceptShipment.classList.remove("bg-green-500");
+        this.$refs.acceptShipment.classList.add("bg-red-500");
         allShipmentInputs.forEach((input) => {
           input.removeAttribute("disabled");
         });

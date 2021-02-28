@@ -52,7 +52,7 @@ export default {
 
   methods: {
     generateXMLCode(payload) {
-      if (payload.length === 0) {
+      if (payload.length === 0 || !this.shipment) {
         return;
       } else {
         this.$refs.xmlTextarea.value = this.shipment;
@@ -75,6 +75,41 @@ export default {
           )}
       </wagon>`;
         });
+        this.$refs.xmlTextarea.value += `
+  <paying>
+    <agreementNumber>179/AK/2012</agreementNumber>
+    <payer>
+      <identifier>
+        <identifier>22123590100000</identifier>
+      </identifier>
+    </payer>
+    <code>31</code>
+  </paying>
+  <statements>
+    <consignorStatement>
+      <statement>025</statement>
+      <statementContent>Towar do dalszego wywozu drogą wodną do CHINY (kraj).</statementContent>
+      <data>Chiny</data>
+    </consignorStatement>
+    <consignorStatement>
+      <statement>035</statement>
+      <statementContent>Przesyłka nadzwyczajna. Zgoda nr PNK PNZ0-019-2021 z dnia</statementContent>
+      <data>PNK PNZ0-019-2021</data>
+    </consignorStatement>
+    <consignorStatement>
+      <statement>015</statement>
+      <statementContent>Umowa rozliczeniowa nr 179/AK/2012</statementContent>
+      <data>179/AK/2012</data>
+    </consignorStatement>
+    <consignorStatement>
+      <statement>005</statement>
+      <statementContent>Umowa handlowa nr </statementContent>
+    </consignorStatement>
+    <consignorStatementsNotAplicable>
+      <consignorStatementsNotAplicable>KONTENERY WIELOKROTNEGO UŻYTKU, POSIADAJĄ LICZNE WGNIECENIA, ZARYSOWANIA I ŚLADY RDZY.</consignorStatementsNotAplicable>
+    </consignorStatementsNotAplicable>
+  </statements>
+</ns2:shipment>`;
       }
     },
     generateContainersXMLinfo(containersPayload) {

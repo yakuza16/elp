@@ -1,6 +1,8 @@
 <template>
   <ShipmentBaseInfo @createShipmentInfo="printShipmentInfo" />
-  <div class="flex justify-start space-x-4 place-items-center text-xs ml-3">
+  <div
+    class="flex justify-start space-x-4 place-items-center text-xs ml-3 mt-4"
+  >
     <div class="border-2 p-1 flex space-x-1 place-items-center">
       <label for="type">Typ wagonu:</label>
       <select ref="type" id="type" class="h-8 text-black">
