@@ -75,6 +75,7 @@ export default {
       </wagon>`;
         });
         this.$refs.xmlTextarea.value += `
+  </wagons>
   <paying>
     <agreementNumber>179/AK/2012</agreementNumber>
     <payer>

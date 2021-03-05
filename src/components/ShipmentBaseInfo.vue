@@ -265,6 +265,7 @@ export default {
     </destinationStation>
     <registrationMethod>X</registrationMethod>
   </shipmentBaseInfo>
+  <wagons>
       `;
       return shipmentInfo;
     },
