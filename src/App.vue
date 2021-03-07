@@ -1,14 +1,14 @@
 <template>
-  <AddWagon msg="Stwórz pociąg" />
+  <CreateTrain msg="Stwórz pociąg" />
 </template>
 
 <script>
-import AddWagon from "./components/AddWagon.vue";
+import CreateTrain from "./components/CreateTrain.vue";
 
 export default {
   name: "App",
   components: {
-    AddWagon,
+    CreateTrain,
   },
 };
 </script>
