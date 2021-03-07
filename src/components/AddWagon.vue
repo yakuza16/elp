@@ -1,5 +1,6 @@
 <template>
   <ShipmentBaseInfo @createShipmentInfo="printShipmentInfo" />
+  <p class="text-lg font-bold my-1">2. Dodaj wagony oraz kontenery</p>
   <div
     class="flex justify-start space-x-4 place-items-center text-xs ml-3 mt-4"
   >

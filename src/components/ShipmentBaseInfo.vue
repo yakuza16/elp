@@ -1,5 +1,6 @@
 <template>
   <div class="border-b-2 py-2">
+    <p class="text-lg font-bold">1. Dane nadawcy i odbiorcy przesyłki</p>
     <div id="inputsParentWrapper" class="flex mb-10 place-content-center">
       <div class="w-1/3 p-4 flex flex-col place-items-end">
         <h1>Nadawca</h1>

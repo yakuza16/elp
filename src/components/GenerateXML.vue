@@ -1,13 +1,20 @@
 <template>
+  <p class="text-lg font-bold border-t-2 pt-2">
+    3. Wygeneruj kod XML i skopiuj go
+  </p>
   <div
     class="flex flex-col justify-items-center place-items-center space-y-4 my-10"
   >
     <button @click="generateXMLCode(payload)" class="w-20">
-      <img src="../assets/icons/xmlIcon.svg" alt="" />
+      <img src="../assets/icons/xmlIcon.svg" alt="generateXML" />
     </button>
-    <label @click="copyXMLtext" class="cursor-pointer" for="xml"
-      >Skopiuj kod</label
-    >
+    <label
+      @click="copyXMLtext"
+      class="cursor-pointer rounded-md border-2 p-2 border-black bg-green-500"
+      for="xml"
+      ><img src="../assets/icons/copy.svg" alt="copy" class="w-6"
+    /></label>
+
     <textarea
       @click="copyXMLtext"
       ref="xmlTextarea"
@@ -18,6 +25,10 @@
       class="w-2/3 text-white bg-gray-900"
     ></textarea>
   </div>
+  <p class="text-lg font-bold mb-8">
+    4. Skopiowany kod XML wklej do notatnika i zapisz go z rozszerzeniem .xml po
+    czym zaczytaj plik w systemie ELP
+  </p>
 </template>
 
 <script>
@@ -77,10 +88,10 @@ export default {
         this.$refs.xmlTextarea.value += `
   </wagons>
   <paying>
-    <agreementNumber>179/AK/2012</agreementNumber>
+    <agreementNumber></agreementNumber>
     <payer>
       <identifier>
-        <identifier>22123590100000</identifier>
+        <identifier></identifier>
       </identifier>
     </payer>
     <code>31</code>
@@ -98,8 +109,8 @@ export default {
     </consignorStatement>
     <consignorStatement>
       <statement>015</statement>
-      <statementContent>Umowa rozliczeniowa nr 179/AK/2012</statementContent>
-      <data>179/AK/2012</data>
+      <statementContent></statementContent>
+      <data></data>
     </consignorStatement>
     <consignorStatement>
       <statement>005</statement>
