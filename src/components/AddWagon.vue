@@ -412,7 +412,6 @@ export default {
     },
     printShipmentInfo(shipmentInfo) {
       this.baseShipmentInfo = shipmentInfo;
-      console.log(this.baseShipmentInfo);
     },
   },
 };
