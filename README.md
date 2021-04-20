@@ -1,10 +1,12 @@
-# [Elektroniczny list przewozowy (ELP)](https://marcin-koduje.com/ "Elektroniczny list przewozowy (ELP)")
+# [Elektroniczny list przewozowy (ELP)](https://elp.netlify.app/ "Elektroniczny list przewozowy (ELP)")
 
 ![](https://cdn2.iconfinder.com/data/icons/harry-potter-colour-collection/60/28_-_Harry_Potter_-_Colour_-_Hogwarts_Express-256.png)
 
 ## Aplikacja napisana we:
 
 **VUE.js**   ![](https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/367_Vuejs_logo-256.png)
+
+stylowanie za pomocą **Tailwind CSS** ![](https://laravelnews.imgix.net/images/tailwindcss.png?ixlib=php-3.3.0)
 
 ------------
 Aplikacja napisana w czystym VUE.js. Na codzień pracuję w firmie będącej operatorem intermodalnym, i do napisania tej aplikacji zmotywowała mnie wykonywana przeze mnie praca. Aplikację można wykorzystać w firmie spedycyjnej/logistycznej w której nadaje się pociągi do wygenerowania kodu XML który później zaczytujemy do systemu PKP Cargo Elektroniczny List Przewozowy i nadajemy w ten sposób pociąg.
