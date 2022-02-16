@@ -27,7 +27,10 @@
   </div>
   <p class="text-lg font-bold mb-8">
     4. Skopiowany kod XML wklej do notatnika i zapisz go z rozszerzeniem .xml po
-    czym zaczytaj plik w systemie ELP
+    czym zaczytaj plik w systemie ELP. Lub
+    <a @click="downloadXML" ref="downloadXML" class="text-green-500"
+      >Pobierz plik xml klikając tu</a
+    >
   </p>
 </template>
 
@@ -61,6 +64,14 @@ export default {
   },
 
   methods: {
+    downloadXML() {
+      const blob = new Blob([this.$refs.xmlTextarea.value], {
+        type: "text/xml",
+      });
+      console.log(blob);
+      this.$refs.downloadXML.href = window.URL.createObjectURL(blob);
+      this.$refs.downloadXML.download = "elp.xml";
+    },
     generateXMLCode(payload) {
       if (payload.length === 0 || !this.shipment) {
         return;
